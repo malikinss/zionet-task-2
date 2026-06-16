@@ -2,40 +2,24 @@
 
 """Public API for the nodes package.
 
-This module re-exports all node functions intended for use by the
-graph builder, providing a single stable import point for all
-pipeline nodes.
+This module re-exports `TriageNodes` as the sole intended entry point
+for accessing pipeline node methods.
 
 Example:
     Importing from the package directly:
     ```
-    from src.nodes import (
-        preprocess_node, classify_node,
-        router_node, shortlist_node, reject_node, escalate_node
-    )
+    from src.nodes import TriageNodes
+    from src.llm import GroqClient
+    from src.logger import AppLogger
 
-    graph.add_node("preprocess", preprocess_node)
-    graph.add_node("classify", classify_node)
-    graph.add_node("shortlist", shortlist_node)
-    graph.add_node("reject", reject_node)
-    graph.add_node("escalate", escalate_node)
+    nodes = TriageNodes(llm=GroqClient(), logger=AppLogger("triage"))
+    graph.add_node("preprocess", nodes.preprocess)
+    graph.add_node("classify", nodes.classify)
     ```
 """
 
-from src.nodes.classify import classify_node
-from src.nodes.preprocess import preprocess_node
-from src.nodes.route import (
-    router_node,
-    shortlist_node,
-    reject_node,
-    escalate_node,
-)
+from src.nodes.triage_nodes import TriageNodes
 
 __all__ = [
-    "classify_node",
-    "preprocess_node",
-    "router_node",
-    "shortlist_node",
-    "reject_node",
-    "escalate_node",
+    "TriageNodes",
 ]
